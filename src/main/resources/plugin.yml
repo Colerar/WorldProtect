@@ -1,0 +1,10 @@
+name: WorldProtect
+main: me.hbj233.worldprotect.WorldProtectPlugin
+version: 1.0.0
+api: ["1.0.0"]
+load: POSTWORLD
+author: HBJ233
+depend:
+  - "KotlinLib"
+  - "EasyAPI"
+  - "GUI"
