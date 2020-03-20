@@ -27,7 +27,10 @@
 - 天气可否改变
 - 禁止物品列表
 - 白名单
-您可以直接输入 /wp gui 以打开 GUI 配置界面, 对于白名单和禁止物品列表, 您可以通过指令操作.
+
+您可以直接输入 /wp gui 以打开 GUI 配置界面. 
+
+对于白名单和禁止物品列表, 您可以通过指令操作:
 - /wp banitem <add|remove> [world: World] [itemId: itemId] 
   - add 添加 remove 移除
   - world 即你世界的名称, 不输入默认当前世界.
