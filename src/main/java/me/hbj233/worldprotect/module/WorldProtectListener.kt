@@ -11,8 +11,10 @@ import cn.nukkit.event.player.*
 import me.hbj233.worldprotect.WorldProtectPlugin
 import me.hbj233.worldprotect.module.WorldProtectModule.worldProtectConfig
 import me.hbj233.worldprotect.util.FormatMsgType
+import me.hbj233.worldprotect.util.commandFormat
 import me.hbj233.worldprotect.util.sendFormatMessage
 import top.wetabq.easyapi.api.defaults.MessageFormatAPI
+import top.wetabq.easyapi.utils.color
 
 object WorldProtectListener : Listener {
 
@@ -285,6 +287,27 @@ object WorldProtectListener : Listener {
                 isCancelled = false
             }
         }
+        event.isCancelled = isCancelled
+    }
+
+    @EventHandler
+    fun onPlayerCommandPreprocessEvent(event: PlayerCommandPreprocessEvent){
+        var isCancelled = false
+
+        println(event.message.commandFormat())
+        var regex1 : Regex
+
+        val wConfig = worldProtectConfig.simpleConfig[event.player.level.folderName]
+        if (wConfig?.whitelist?.contains(event.player.name)?.not() != false) {
+            wConfig?.bannedCommandList?.forEach { s ->
+                regex1 = s.toRegex()
+                if(regex1.matches(event.message)){
+                    event.player.sendMessage("${WorldProtectPlugin.instance.TITLE}&c当前世界 (${event.player.level.folderName}) 禁用了该命令 (${event.message}).".color())
+                    isCancelled = true
+                }
+            }
+        }
+
         event.isCancelled = isCancelled
     }
 }

@@ -24,5 +24,6 @@ data class WorldProtectData(
         val canWeatherChange: Boolean,
 
         var bannedItemList: MutableList<Int>,
-        var whitelist: MutableList<String>
+        var whitelist: MutableList<String>,
+        var bannedCommandList: MutableList<String>
 )

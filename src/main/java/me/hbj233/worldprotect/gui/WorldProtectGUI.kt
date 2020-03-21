@@ -37,7 +37,8 @@ class WorldProtectConfigGui : ResponsibleFormWindowSimple("WorldProtect 配置�
                         "canLeavesDecay" to "树叶可否衰退",
                         "canWeatherChange" to "天气可否改变",
                         "bannedItemList" to "%NONE%",
-                        "whitelist" to "%NONE%"
+                        "whitelist" to "%NONE%",
+                        "bannedCommandList" to "%NONE%"
                 ))
                 //configGUI.canChangeId = false
                 wConfig.init()
