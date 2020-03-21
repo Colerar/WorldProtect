@@ -26,19 +26,27 @@
 - 树叶可否衰退
 - 天气可否改变
 - 禁止物品列表
+- 禁止命令列表
 - 白名单
 
 您可以直接输入 /wp gui 以打开 GUI 配置界面. 
 
 对于白名单和禁止物品列表, 您可以通过指令操作:
-- /wp banitem <add|remove> [world: World] [itemId: itemId] 
+- ```/wp banitem <add|remove> [world: World] [itemId: itemId] ``` 
   - add 添加 remove 移除
   - world 即你世界的名称, 不输入默认当前世界.
   - itemId 即要操作的物品, 不输入默认手持物品(若有).
-- /wp whitelist <add|remove> [world: World] [player: Target]
+- ```/wp whitelist <add|remove> [world: World] [player: Target]```
   - add 添加 remove 移除
   - world 即你世界的名称, 不输入默认当前世界.
   - player 即要操作的玩家, 不输入默认为自己.
+- ```/wp bancommand <add|remove> <command: String> [world: String]```
+  - add 添加 remove 移除
+  - command 即要操作的指令.
+    - 实质上, 你可以输入一个正则表达式, 一般而言, 你只需要输入文本即可.
+    - 你可以输入主命令 (例如: ```/tp```), 你也可以输入子命令(```/wmg add```), 但是你需要添加双引号--  ```"/wmg add"```
+    - 一般地，推荐输入形如这样的: ```"^/主命令(\s+|$)"``` , 意思是匹配开头为 主命令 后面要么空格要么终止的命令, 举个例子, ```/tp``` 不会匹配 ```/tpa``` 但是会匹配 ```/tp Steve```
+  - world 即你世界的名称, 不输入默认当前世界.
 ## 依赖
 本插件依赖于:
 - [KotlinLib](https://nukkitx.com/resources/kotlinlib.48/)
