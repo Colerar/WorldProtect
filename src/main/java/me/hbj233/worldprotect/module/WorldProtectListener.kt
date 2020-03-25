@@ -17,7 +17,7 @@ import top.wetabq.easyapi.utils.color
 
 object WorldProtectListener : Listener {
 
-    private fun sendAuthorityTips(player:Player) {
+    private fun sendAuthorityTips(player : Player) {
         // sendFormatMessage(player,"你无法进行此操作.",FormatMsgType.ERROR)
         sendFormatMessage(player, MessageFormatAPI.format(WorldProtectPlugin.instance.protectMessageFormat, player), FormatMsgType.TIP)
     }

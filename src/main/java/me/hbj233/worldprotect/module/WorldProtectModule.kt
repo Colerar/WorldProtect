@@ -41,11 +41,13 @@ object WorldProtectModule : SimpleEasyAPIModule() {
         })
 
         worldProtectConfig = object : SimpleCodecEasyConfig<WorldProtectData>(
-                "worldProtect", WorldProtectPlugin.instance, WorldProtectData::class.java,WorldProtectData(canInteract = true, canInteractEntity = true,
+                "worldProtect", WorldProtectPlugin.instance, WorldProtectData::class.java,
+                WorldProtectData(canInteract = true, canInteractEntity = true,
                 canPlayerEnterVehicle = true, canChangeGamemode = true, defaultGamemode = 1, canProjLaunch = true, canDropItem = true, canFoodLevelChange = true,
                 canPlace = true, canBreak = true, canBurn = true, canIgnite = true,canBlockForm = true, canLiquidFlow = true,
                 canExplosion = true, canLeavesDecay = true,canWeatherChange = true, canBeDamaged = true, canInventoryTransaction = true,
-                bannedItemList = mutableListOf(), whitelist = mutableListOf(), bannedCommandList = mutableListOf())) {}
+                bannedItemList = mutableListOf(), whitelist = mutableListOf(), bannedCommandList = mutableListOf())
+        ) {}
         worldProtectConfig.init()
 
         WorldProtectPlugin.instance.server.levels.values.forEach { level ->
@@ -64,7 +66,6 @@ object WorldProtectModule : SimpleEasyAPIModule() {
 
         this.registerAPI("worldProtectCommand", CommandAPI())
                 .add(WorldProtectCommand)
-
     }
 
     override fun moduleDisable() {
