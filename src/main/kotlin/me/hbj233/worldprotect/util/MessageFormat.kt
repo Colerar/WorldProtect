@@ -13,7 +13,6 @@ enum class FormatMsgType {
 
 fun sendFormatMessage(p: Player, message :String,
                       formatMsgType : FormatMsgType = FormatMsgType.TIP) {
-    val title = WorldProtectPlugin.instance.TITLE
     if (p.isOnline) when (formatMsgType) {
         FormatMsgType.TIP -> ScreenShowModule.addScreenShow(ScreenShow(setOf(p), message.color(), ScreenShowModule.HIGHEST_PRIORITY, 20, 20, false, false, ShowType.TIP))
         FormatMsgType.ERROR -> ScreenShowModule.addScreenShow(ScreenShow(setOf(p), message.color(), ScreenShowModule.HIGHEST_PRIORITY, 20, 20, false, false, ShowType.TIP))
