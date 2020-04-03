@@ -16,9 +16,9 @@ class WorldProtectConfigGui : ResponsibleFormWindowSimple("WorldProtect 配置�
             this.addButton(it.folderName) { player ->
                 val configGUI = ConfigGUI(
                         wConfig,
-                        wConfig.simpleConfig[it.folderName]?:wConfig.getDefaultValue(),
-                        player.level.folderName,
-                        "&c&l${player.level.folderName} &r&e的世界保护配置".color(),
+                        wConfig.safeGetData(it.folderName),
+                        it.folderName,
+                        "&c&l${it.folderName} &r&e的世界保护配置".color(),
                         this
                 )
 

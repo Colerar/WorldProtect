@@ -335,15 +335,15 @@ object WorldProtectListener : Listener {
                         val spawnPoint = event.player.level.spawnLocation
                         if ((!event.player.position.isInRange(spawnPoint, wConfig.border))) {
                             if (nextCanKnock < System.currentTimeMillis()) {
-                                val d1: Int = event.player.getDirectionPlane().round().getFloorX()
-                                val d2: Int = event.player.getDirectionPlane().round().getFloorY()
+                                val d1: Int = event.player.directionPlane.round().floorX
+                                val d2: Int = event.player.directionPlane.round().floorY
                                 if (d1 != 0) {
                                     ParticleUtils.rectangle(event.player.add(5.0, 5.0), event.player.subtract(5.0, 5.0), 0.5, RedstoneParticle(Vector3()), listOf(event.player))
                                 } else if (d2 != 0) {
                                     ParticleUtils.rectangle(event.player.add(0.0, 5.0, 5.0), event.player.subtract(0.0, 5.0, 5.0), 0.5, RedstoneParticle(Vector3()), listOf(event.player))
                                 }
                                 sendAuthorityTips(event.player)
-                                event.player.knockBack(null, 0.5, event.player.speed.x * 0.5 - event.player.directionPlane.x * 2, 1.5, event.player.speed.z * 0.5 - event.player.directionPlane.y * 2)
+                                event.player.knockBack(null, 0.5, event.player.speed.x * 0.5 - event.player.directionPlane.x * 1, 1.5, event.player.speed.z * 0.5 - event.player.directionPlane.y * 1)
                                 nextCanKnock = System.currentTimeMillis() + 500
                             }
                         }
