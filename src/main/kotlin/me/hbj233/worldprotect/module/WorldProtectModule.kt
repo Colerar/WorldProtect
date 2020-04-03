@@ -24,7 +24,7 @@ object WorldProtectModule : SimpleEasyAPIModule() {
             WorldProtectPlugin.instance,
             MODULE_NAME,
             AUTHOR,
-            ModuleVersion(1, 1, 0)
+            ModuleVersion(1, 2, 0)
     )
 
     override fun moduleRegister() {
