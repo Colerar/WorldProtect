@@ -46,8 +46,8 @@ class WorldProtectConfigGui : ResponsibleFormWindowSimple("WorldProtect 配置�
                         "canFly" to "能否飞行",
                         "isBorder" to "启用世界边界",
                         "border" to "边界范围",
-                        "isBreakRange" to "出生点范围内不允许破坏",
-                        "unbreakableRange" to "出生点不可破坏范围",
+                        "isBreakPutRange" to "出生点范围内不允许破坏",
+                        "unbreakPutRange" to "出生点不可破坏范围",
                         "bannedItemList" to "%NONE%",
                         "whitelist" to "%NONE%",
                         "bannedCommandList" to "%NONE%"

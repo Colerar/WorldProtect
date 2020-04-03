@@ -13,9 +13,8 @@ data class WorldProtectData(
         val canFly: Boolean,
         val isBorder: Boolean,
         val border: Int,
-        val isBreakRange: Boolean,
-        val unbreakableRange: Int,
-
+        val isBreakPutRange: Boolean,
+        val unbreakPutRange: Int,
         val canFoodLevelChange: Boolean,
         val canExplosion: Boolean,
         val canInventoryTransaction: Boolean,

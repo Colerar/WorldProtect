@@ -61,8 +61,13 @@ object WorldProtectListener : Listener {
         var isCancelled = false
         val wConfig = worldProtectConfig.simpleConfig[event.player.level.folderName]
         if (wConfig != null) {
-            if (!wConfig.canPlace){
+            if (!wConfig.canPlace) {
                 isCancelled = !wConfig.whitelist.contains(event.player.name)
+            }
+            if (wConfig.isBreakPutRange) {
+                if (event.block.location.isInRange(event.player.level.spawnLocation.location, wConfig.unbreakPutRange)) {
+                    isCancelled = true
+                }
             }
         }
         if (isCancelled) sendAuthorityTips(event.player)
@@ -79,7 +84,7 @@ object WorldProtectListener : Listener {
                     isCancelled = true
                 }
                 val spawnPoint = event.player.level.spawnLocation
-                if (isInRange(event.block.x, event.block.z, spawnPoint.x, spawnPoint.z, wConfig.unbreakableRange)) {
+                if (isInRange(event.block.x, event.block.z, spawnPoint.x, spawnPoint.z, wConfig.unbreakPutRange)) {
                     isCancelled = true
                 }
             }

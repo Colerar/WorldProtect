@@ -47,7 +47,7 @@ object WorldProtectModule : SimpleEasyAPIModule() {
                         canPlace = true, canBreak = true, canBurn = true, canIgnite = true, canBlockForm = true, canLiquidFlow = true,
                         canExplosion = true, canLeavesDecay = true, canWeatherChange = true, canBeDamaged = true, canInventoryTransaction = true,
                         bannedItemList = mutableListOf(), whitelist = mutableListOf(), bannedCommandList = mutableListOf(), isKeepInv = false,
-                        canFly = true, isBorder = false, border = 50, isBreakRange = false, unbreakableRange = 50)
+                        canFly = true, isBorder = false, border = 50, isBreakPutRange = false, unbreakPutRange = 50)
         ) {}
         worldProtectConfig.init()
 
