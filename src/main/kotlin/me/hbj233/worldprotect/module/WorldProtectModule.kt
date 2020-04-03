@@ -43,10 +43,11 @@ object WorldProtectModule : SimpleEasyAPIModule() {
         worldProtectConfig = object : SimpleCodecEasyConfig<WorldProtectData>(
                 "worldProtect", WorldProtectPlugin.instance, WorldProtectData::class.java,
                 WorldProtectData(canInteract = true, canInteractEntity = true,
-                canPlayerEnterVehicle = true, canChangeGamemode = true, defaultGamemode = 1, canProjLaunch = true, canDropItem = true, canFoodLevelChange = true,
-                canPlace = true, canBreak = true, canBurn = true, canIgnite = true,canBlockForm = true, canLiquidFlow = true,
-                canExplosion = true, canLeavesDecay = true,canWeatherChange = true, canBeDamaged = true, canInventoryTransaction = true,
-                bannedItemList = mutableListOf(), whitelist = mutableListOf(), bannedCommandList = mutableListOf())
+                        canPlayerEnterVehicle = true, canChangeGamemode = true, defaultGamemode = 1, canProjLaunch = true, canDropItem = true, canFoodLevelChange = true,
+                        canPlace = true, canBreak = true, canBurn = true, canIgnite = true, canBlockForm = true, canLiquidFlow = true,
+                        canExplosion = true, canLeavesDecay = true, canWeatherChange = true, canBeDamaged = true, canInventoryTransaction = true,
+                        bannedItemList = mutableListOf(), whitelist = mutableListOf(), bannedCommandList = mutableListOf(), isKeepInv = false,
+                        canFly = true, isBorder = false, border = 50, isBreakRange = false, unbreakableRange = 50)
         ) {}
         worldProtectConfig.init()
 

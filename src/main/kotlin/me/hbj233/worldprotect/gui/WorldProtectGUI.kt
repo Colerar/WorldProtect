@@ -42,6 +42,12 @@ class WorldProtectConfigGui : ResponsibleFormWindowSimple("WorldProtect 配置�
                         "canLiquidFlow" to "流体可否流动",
                         "canLeavesDecay" to "树叶可否衰退",
                         "canWeatherChange" to "天气可否改变",
+                        "isKeepInv" to "物品不掉落",
+                        "canFly" to "能否飞行",
+                        "isBorder" to "启用世界边界",
+                        "border" to "边界范围",
+                        "isBreakRange" to "出生点范围内不允许破坏",
+                        "unbreakableRange" to "出生点不可破坏范围",
                         "bannedItemList" to "%NONE%",
                         "whitelist" to "%NONE%",
                         "bannedCommandList" to "%NONE%"
