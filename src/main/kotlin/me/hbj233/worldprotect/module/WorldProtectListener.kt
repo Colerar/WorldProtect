@@ -9,23 +9,19 @@ import cn.nukkit.event.entity.*
 import cn.nukkit.event.inventory.InventoryTransactionEvent
 import cn.nukkit.event.level.WeatherChangeEvent
 import cn.nukkit.event.player.*
-import cn.nukkit.level.particle.RedstoneParticle
-import cn.nukkit.math.Vector3
 import me.hbj233.worldprotect.WorldProtectPlugin
 import me.hbj233.worldprotect.module.WorldProtectModule.worldProtectConfig
 import me.hbj233.worldprotect.util.FormatMsgType
-import me.hbj233.worldprotect.util.ParticleUtils
+import me.hbj233.worldprotect.util.isInRange
 import me.hbj233.worldprotect.util.sendFormatMessage
 import top.wetabq.easyapi.api.defaults.MessageFormatAPI
 import top.wetabq.easyapi.api.defaults.SimpleAsyncTaskAPI
 import top.wetabq.easyapi.utils.color
-import kotlin.math.max
-import kotlin.math.min
 
 
 object WorldProtectListener : Listener {
 
-    private fun sendAuthorityTips(player: Player) {
+    internal fun sendAuthorityTips(player: Player) {
         // sendFormatMessage(player,"你无法进行此操作.",FormatMsgType.ERROR)
         sendFormatMessage(player, MessageFormatAPI.format(WorldProtectPlugin.instance.protectMessageFormat, player), FormatMsgType.TIP)
     }
@@ -335,25 +331,6 @@ object WorldProtectListener : Listener {
                         }
                     }
                 }
-                if (wConfig.isBorder) {
-                    if (!wConfig.whitelist.contains(event.player.name)) {
-                        val spawnPoint = event.player.level.spawnLocation
-                        if ((!event.player.position.isInRange(spawnPoint, wConfig.border))) {
-                            if (nextCanKnock < System.currentTimeMillis()) {
-                                val d1: Int = event.player.directionPlane.round().floorX
-                                val d2: Int = event.player.directionPlane.round().floorY
-                                if (d1 != 0) {
-                                    ParticleUtils.rectangle(event.player.add(5.0, 5.0), event.player.subtract(5.0, 5.0), 0.5, RedstoneParticle(Vector3()), listOf(event.player))
-                                } else if (d2 != 0) {
-                                    ParticleUtils.rectangle(event.player.add(0.0, 5.0, 5.0), event.player.subtract(0.0, 5.0, 5.0), 0.5, RedstoneParticle(Vector3()), listOf(event.player))
-                                }
-                                sendAuthorityTips(event.player)
-                                event.player.knockBack(null, 0.5, event.player.speed.x * 0.5 - event.player.directionPlane.x * 1, 1.5, event.player.speed.z * 0.5 - event.player.directionPlane.y * 1)
-                                nextCanKnock = System.currentTimeMillis() + 500
-                            }
-                        }
-                    }
-                }
             }
         }
     }
@@ -362,14 +339,6 @@ object WorldProtectListener : Listener {
     fun onPlayerInvalidMove(event: PlayerInvalidMoveEvent) {
         event.isCancelled = true
     }
-
-    private fun Double.isBetween(double1: Double, double2: Double): Boolean = this in min(double1, double2)..max(double1, double2)
-
-    private fun Vector3.isInRange(vector3: Vector3, range: Int): Boolean =
-            isInRange(this.x, this.z, vector3.x, vector3.z, range)
-
-    private fun isInRange(x1: Double, z1: Double, x2: Double, z2: Double, range: Int): Boolean =
-            x1.isBetween(x2 + range, x2 - range) && z1.isBetween(z2 + range, z2 - range)
 
     @EventHandler
     fun onPlayerCommandPreprocessEvent(event: PlayerCommandPreprocessEvent) {
