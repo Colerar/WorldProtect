@@ -122,18 +122,14 @@ object WorldProtectListener : Listener {
     fun onEntityLevelChangeEvent(event: EntityLevelChangeEvent){
         val p = event.entity
         if (p is Player) {
-            var isCancelled = false
-            val wConfig = worldProtectConfig.simpleConfig[p.level.folderName]
+            val wConfig = worldProtectConfig.simpleConfig[event.target.folderName]
             if (wConfig != null) {
                 if (!wConfig.canChangeGamemode){
-                    isCancelled = if (!wConfig.whitelist.contains(p.name)) false else {
+                    if (!wConfig.whitelist.contains(p.name)) {
                         p.setGamemode(wConfig.defaultGamemode)
-                        true
                     }
                 }
             }
-            if (isCancelled) sendAuthorityTips(p)
-            event.isCancelled = isCancelled
         }
     }
 

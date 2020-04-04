@@ -47,7 +47,7 @@ object WorldProtectModule : SimpleEasyAPIModule() {
                 ?: WorldProtectPlugin.instance.TITLE
         WorldProtectPlugin.instance.protectMessageFormat = simpleConfig.getPathValue(".protect.message") as String?
                 ?: WorldProtectPlugin.instance.protectMessageFormat
-        pullStrength = (simpleConfig.getPathValue(".protect.pullstrength") as String?)?.toDouble() ?: 1.0
+        pullStrength = simpleConfig.getPathValue(".protect.pullstrength").toString().toDouble()
 
         MessageFormatAPI.registerSimpleFormatter(object : SimpleMessageFormatter {
             override fun format(message: String): String = message.replace("%world_protect_title%", WorldProtectPlugin.instance.TITLE)
@@ -95,7 +95,7 @@ object WorldProtectModule : SimpleEasyAPIModule() {
                                                 }
                                                 WorldProtectListener.sendAuthorityTips(it)
                                                 val playerVectorToSpawn = Vector2(it.level.spawnLocation.x - it.x, it.level.spawnLocation.z - it.z)
-                                                it.setMotion(Vector3(tanh(playerVectorToSpawn.x) * pullStrength, 1.5, tanh(playerVectorToSpawn.y) * pullStrength))
+                                                it.motion = Vector3(tanh(playerVectorToSpawn.x) * pullStrength, 1.5, tanh(playerVectorToSpawn.y) * pullStrength)
                                             }
                                         }
                                     }
