@@ -57,12 +57,14 @@ object WorldProtectListener : Listener {
         var isCancelled = false
         val wConfig = worldProtectConfig.simpleConfig[event.player.level.folderName]
         if (wConfig != null) {
-            if (!wConfig.canPlace) {
-                isCancelled = !wConfig.whitelist.contains(event.player.name)
-            }
-            if (wConfig.isBreakPutRange) {
-                if (event.block.location.isInRange(event.player.level.spawnLocation.location, wConfig.unbreakPutRange)) {
+            if (!wConfig.whitelist.contains(event.player.name)) {
+                if (!wConfig.canPlace) {
                     isCancelled = true
+                }
+                if (wConfig.isBreakPutRange) {
+                    if (event.block.location.isInRange(event.player.level.spawnLocation.location, wConfig.unbreakPutRange)) {
+                        isCancelled = true
+                    }
                 }
             }
         }
@@ -320,11 +322,9 @@ object WorldProtectListener : Listener {
             if (wConfig != null) {
                 if (!wConfig.canFly) {
                     if (event.player.adventureSettings.get(AdventureSettings.Type.FLYING)) {
-                        if (!wConfig.whitelist.contains(event.player.name)) {
-                            event.player.adventureSettings.set(AdventureSettings.Type.FLYING, false)
-                            event.player.adventureSettings.update()
-                            sendAuthorityTips(event.player)
-                        }
+                        event.player.adventureSettings.set(AdventureSettings.Type.FLYING, false)
+                        event.player.adventureSettings.update()
+                        sendAuthorityTips(event.player)
                     }
                 }
             }

@@ -1,5 +1,6 @@
 package me.hbj233.worldprotect.module
 
+import cn.nukkit.AdventureSettings
 import cn.nukkit.Player
 import cn.nukkit.level.particle.RedstoneParticle
 import cn.nukkit.math.Vector2
@@ -14,6 +15,7 @@ import top.wetabq.easyapi.config.encoder.advance.SimpleCodecEasyConfig
 import top.wetabq.easyapi.module.ModuleInfo
 import top.wetabq.easyapi.module.ModuleVersion
 import top.wetabq.easyapi.module.SimpleEasyAPIModule
+import top.wetabq.easyapi.utils.color
 import kotlin.math.tanh
 
 object WorldProtectModule : SimpleEasyAPIModule() {
@@ -43,7 +45,7 @@ object WorldProtectModule : SimpleEasyAPIModule() {
                 .add(SimpleConfigEntry(".protect.message", WorldProtectPlugin.instance.protectMessageFormat))
                 .add(SimpleConfigEntry(".protect.pullstrength", pullStrength))
 
-        WorldProtectPlugin.instance.TITLE = simpleConfig.getPathValue(".title") as String?
+        WorldProtectPlugin.instance.TITLE = simpleConfig.getPathValue(".title")?.toString()?.color()
                 ?: WorldProtectPlugin.instance.TITLE
         WorldProtectPlugin.instance.protectMessageFormat = simpleConfig.getPathValue(".protect.message") as String?
                 ?: WorldProtectPlugin.instance.protectMessageFormat
@@ -96,6 +98,15 @@ object WorldProtectModule : SimpleEasyAPIModule() {
                                                 WorldProtectListener.sendAuthorityTips(it)
                                                 val playerVectorToSpawn = Vector2(it.level.spawnLocation.x - it.x, it.level.spawnLocation.z - it.z)
                                                 it.motion = Vector3(tanh(playerVectorToSpawn.x) * pullStrength, 1.5, tanh(playerVectorToSpawn.y) * pullStrength)
+                                            }
+                                            if (!wConfig.canFly) {
+                                                if (it.adventureSettings.get(AdventureSettings.Type.FLYING)) {
+                                                    if (!wConfig.whitelist.contains(it.name)) {
+                                                        it.adventureSettings.set(AdventureSettings.Type.FLYING, false)
+                                                        it.adventureSettings.update()
+                                                        WorldProtectListener.sendAuthorityTips(it)
+                                                    }
+                                                }
                                             }
                                         }
                                     }
