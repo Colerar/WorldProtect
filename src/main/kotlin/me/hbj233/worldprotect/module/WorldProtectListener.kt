@@ -1,6 +1,5 @@
 package me.hbj233.worldprotect.module
 
-import cn.nukkit.AdventureSettings
 import cn.nukkit.Player
 import cn.nukkit.event.EventHandler
 import cn.nukkit.event.Listener
@@ -15,7 +14,6 @@ import me.hbj233.worldprotect.util.FormatMsgType
 import me.hbj233.worldprotect.util.isInRange
 import me.hbj233.worldprotect.util.sendFormatMessage
 import top.wetabq.easyapi.api.defaults.MessageFormatAPI
-import top.wetabq.easyapi.api.defaults.SimpleAsyncTaskAPI
 import top.wetabq.easyapi.utils.color
 
 
@@ -82,8 +80,10 @@ object WorldProtectListener : Listener {
                     isCancelled = true
                 }
                 val spawnPoint = event.player.level.spawnLocation
-                if (isInRange(event.block.x, event.block.z, spawnPoint.x, spawnPoint.z, wConfig.unbreakPutRange)) {
-                    isCancelled = true
+                if (wConfig.isBreakPutRange) {
+                    if (isInRange(event.block.x, event.block.z, spawnPoint.x, spawnPoint.z, wConfig.unbreakPutRange)) {
+                        isCancelled = true
+                    }
                 }
             }
         }
@@ -126,7 +126,22 @@ object WorldProtectListener : Listener {
         if (p is Player) {
             val wConfig = worldProtectConfig.simpleConfig[event.target.folderName]
             if (wConfig != null) {
-                if (!wConfig.canChangeGamemode){
+                if (!wConfig.canChangeGamemode) {
+                    if (!wConfig.whitelist.contains(p.name)) {
+                        p.setGamemode(wConfig.defaultGamemode)
+                    }
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    fun onEntityTeleportEvent(event: EntityTeleportEvent) {
+        val p = event.entity
+        if (p is Player) {
+            val wConfig = worldProtectConfig.simpleConfig[event.to.level.folderName]
+            if (wConfig != null) {
+                if (!wConfig.canChangeGamemode) {
                     if (!wConfig.whitelist.contains(p.name)) {
                         p.setGamemode(wConfig.defaultGamemode)
                     }
@@ -142,7 +157,7 @@ object WorldProtectListener : Listener {
             var isCancelled = false
             val wConfig = worldProtectConfig.simpleConfig[player.level.folderName]
             if (wConfig != null) {
-                if (!wConfig.canProjLaunch){
+                if (!wConfig.canProjLaunch) {
                     isCancelled = !wConfig.whitelist.contains(player.name)
                 }
             }
@@ -165,27 +180,53 @@ object WorldProtectListener : Listener {
     }
 
     @EventHandler
-    fun onEntityDamageEvent(event: EntityDamageEvent){
-        val player = event.entity
-        if (player is Player){
-            var isCancelled = false
-            val wConfig = worldProtectConfig.simpleConfig[player.level.folderName]
-            if (wConfig != null) {
-                if (!wConfig.canBeDamaged){
-                    isCancelled = true
+    fun onEntityDamageEvent(event: EntityDamageEvent) {
+        if (event.cause != EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
+            val player = event.entity
+            if (player is Player) {
+                var isCancelled = false
+                val wConfig = worldProtectConfig.simpleConfig[player.level.folderName]
+                if (wConfig != null) {
+                    if (!wConfig.canBeDamaged) {
+                        isCancelled = true
+                    }
                 }
+                if (isCancelled) event.damage = 0.0F
+                event.isCancelled = isCancelled
             }
-            if (isCancelled) sendAuthorityTips(player)
-            event.isCancelled = isCancelled
         }
     }
 
     @EventHandler
-    fun onBlockBurnEvent(event: BlockBurnEvent){
+    fun onEntityDamageByEntityEvent(event: EntityDamageByEntityEvent) {
+        val entity = event.entity
+        val damager = event.damager
+
+        val wConfig = worldProtectConfig.safeGetData(entity.level.folderName)
+        if (!wConfig.canBeDamaged) {
+            var damage = 0.0F
+            var isCancelled = true
+            if (damager is Player) {
+                if (!wConfig.whitelist.contains(event.damager.name)) {
+                    if (entity != damager) {
+                        sendAuthorityTips(damager)
+                        damage = 0.0F
+                        isCancelled = true
+                    }
+                }
+            }
+            event.damage = damage
+            event.isCancelled = isCancelled
+        }
+
+    }
+
+    @EventHandler
+    fun onBlockBurnEvent(event: BlockBurnEvent) {
         var isCancelled = false
         val wConfig = worldProtectConfig.simpleConfig[event.block.level.folderName]
         if (wConfig != null) {
-            if (!wConfig.canBurn){
+            if (!wConfig.canBurn) {
                 isCancelled = true
             }
         }
@@ -309,24 +350,6 @@ object WorldProtectListener : Listener {
             if (wConfig != null) if (wConfig.isKeepInv) {
                 event.keepExperience = true
                 event.keepInventory = true
-            }
-        }
-    }
-
-    private var nextCanKnock: Long = 0
-
-    @EventHandler
-    fun onPlayerMove(event: PlayerMoveEvent) {
-        SimpleAsyncTaskAPI.add {
-            val wConfig = worldProtectConfig.simpleConfig[event.player.level.folderName]
-            if (wConfig != null) {
-                if (!wConfig.canFly) {
-                    if (event.player.adventureSettings.get(AdventureSettings.Type.FLYING)) {
-                        event.player.adventureSettings.set(AdventureSettings.Type.FLYING, false)
-                        event.player.adventureSettings.update()
-                        sendAuthorityTips(event.player)
-                    }
-                }
             }
         }
     }

@@ -74,7 +74,7 @@ object WorldProtectModule : SimpleEasyAPIModule() {
             }
         }
 
-        SimplePluginTaskAPI.repeating(20) { _, _ ->
+        SimplePluginTaskAPI.repeating(10) { _, _ ->
 
             WorldProtectPlugin.instance.server.levels.values
                     .fold(mutableListOf<String>(), { acc, level -> acc.add(level.folderName); acc })
@@ -105,6 +105,7 @@ object WorldProtectModule : SimpleEasyAPIModule() {
                                                         it.adventureSettings.set(AdventureSettings.Type.FLYING, false)
                                                         it.adventureSettings.update()
                                                         WorldProtectListener.sendAuthorityTips(it)
+                                                        it.motion = Vector3(0.0, -3.0, 0.0)
                                                     }
                                                 }
                                             }

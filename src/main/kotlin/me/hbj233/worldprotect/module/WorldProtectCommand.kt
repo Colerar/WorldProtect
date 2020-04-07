@@ -103,6 +103,7 @@ object WorldProtectCommand : EasyCommand("wp", "World Protect") {
                         }
                         else -> sendInputError(sender)
                     }
+                    WorldProtectModule.worldProtectConfig.save()
                 } else {
                     sender.sendMessage("${WorldProtectPlugin.instance.TITLE}&c权限不足.".color())
                 }
