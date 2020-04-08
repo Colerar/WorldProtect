@@ -1,6 +1,6 @@
 name: WorldProtect
 main: me.hbj233.worldprotect.WorldProtectPlugin
-version: 1.2.0
+version: 1.2.1
 api: ["1.0.0"]
 load: POSTWORLD
 author: HBJ233
