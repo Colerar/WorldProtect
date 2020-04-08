@@ -2,6 +2,7 @@ package me.hbj233.worldprotect.module
 
 import cn.nukkit.Player
 import cn.nukkit.event.EventHandler
+import cn.nukkit.event.EventPriority
 import cn.nukkit.event.Listener
 import cn.nukkit.event.block.*
 import cn.nukkit.event.entity.*
@@ -24,10 +25,10 @@ object WorldProtectListener : Listener {
         sendFormatMessage(player, MessageFormatAPI.format(WorldProtectPlugin.instance.protectMessageFormat, player), FormatMsgType.TIP)
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     fun onPlayerInteractEvent(event: PlayerInteractEvent) {
         val wConfig = worldProtectConfig.simpleConfig[event.player.level.folderName]
-        var isCancelled = false
+        var isCancelled = event.isCancelled
         if (wConfig != null) {
             if (!wConfig.canInteract){
                 isCancelled = !wConfig.whitelist.contains(event.player.name)
@@ -37,9 +38,9 @@ object WorldProtectListener : Listener {
         event.isCancelled = isCancelled
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     fun onPlayerInteractEntityEvent(event: PlayerInteractEntityEvent) {
-        var isCancelled = false
+        var isCancelled = event.isCancelled
         val wConfig = worldProtectConfig.simpleConfig[event.player.level.folderName]
         if (wConfig != null) {
             if (!wConfig.canInteractEntity){
@@ -50,9 +51,9 @@ object WorldProtectListener : Listener {
         event.isCancelled = isCancelled
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     fun onBlockPlaceEvent(event: BlockPlaceEvent){
-        var isCancelled = false
+        var isCancelled = event.isCancelled
         val wConfig = worldProtectConfig.simpleConfig[event.player.level.folderName]
         if (wConfig != null) {
             if (!wConfig.whitelist.contains(event.player.name)) {
@@ -70,9 +71,9 @@ object WorldProtectListener : Listener {
         event.isCancelled = isCancelled
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     fun onBlockBreakEvent(event: BlockBreakEvent){
-        var isCancelled = false
+        var isCancelled = event.isCancelled
         val wConfig = worldProtectConfig.simpleConfig[event.player.level.folderName]
         if (wConfig != null) {
             if (!wConfig.whitelist.contains(event.player.name)) {
@@ -91,11 +92,11 @@ object WorldProtectListener : Listener {
         event.isCancelled = isCancelled
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     fun onEntityVehicleEnterEvent(event: EntityVehicleEnterEvent){
         val p = event.entity
         if (p is Player) {
-            var isCancelled = false
+            var isCancelled = event.isCancelled
             val wConfig = worldProtectConfig.simpleConfig[p.level.folderName]
             if (wConfig != null) {
                 if (!wConfig.canPlayerEnterVehicle){
@@ -107,9 +108,9 @@ object WorldProtectListener : Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     fun onPlayerGameModeChangeEvent(event: PlayerGameModeChangeEvent){
-        var isCancelled = false
+        var isCancelled = event.isCancelled
         val wConfig = worldProtectConfig.simpleConfig[event.player.level.folderName]
         if (wConfig != null) {
             if (!wConfig.canChangeGamemode){
@@ -120,7 +121,7 @@ object WorldProtectListener : Listener {
         event.isCancelled = isCancelled
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     fun onEntityLevelChangeEvent(event: EntityLevelChangeEvent){
         val p = event.entity
         if (p is Player) {
@@ -135,7 +136,7 @@ object WorldProtectListener : Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     fun onEntityTeleportEvent(event: EntityTeleportEvent) {
         val p = event.entity
         if (p is Player) {
@@ -150,11 +151,11 @@ object WorldProtectListener : Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     fun onProjectileLaunchEvent(event: ProjectileLaunchEvent) {
         val player = event.entity.shootingEntity
         if (player is Player) {
-            var isCancelled = false
+            var isCancelled = event.isCancelled
             val wConfig = worldProtectConfig.simpleConfig[player.level.folderName]
             if (wConfig != null) {
                 if (!wConfig.canProjLaunch) {
@@ -166,9 +167,9 @@ object WorldProtectListener : Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     fun onPlayerDropItemEvent(event: PlayerDropItemEvent){
-        var isCancelled = false
+        var isCancelled = event.isCancelled
         val wConfig = worldProtectConfig.simpleConfig[event.player.level.folderName]
         if (wConfig != null) {
             if (!wConfig.canDropItem){
@@ -179,12 +180,12 @@ object WorldProtectListener : Listener {
         event.isCancelled = isCancelled
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     fun onEntityDamageEvent(event: EntityDamageEvent) {
         if (event.cause != EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
             val player = event.entity
             if (player is Player) {
-                var isCancelled = false
+                var isCancelled = event.isCancelled
                 val wConfig = worldProtectConfig.simpleConfig[player.level.folderName]
                 if (wConfig != null) {
                     if (!wConfig.canBeDamaged) {
@@ -197,7 +198,7 @@ object WorldProtectListener : Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     fun onEntityDamageByEntityEvent(event: EntityDamageByEntityEvent) {
         val entity = event.entity
         val damager = event.damager
@@ -221,9 +222,9 @@ object WorldProtectListener : Listener {
 
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     fun onBlockBurnEvent(event: BlockBurnEvent) {
-        var isCancelled = false
+        var isCancelled = event.isCancelled
         val wConfig = worldProtectConfig.simpleConfig[event.block.level.folderName]
         if (wConfig != null) {
             if (!wConfig.canBurn) {
@@ -233,9 +234,9 @@ object WorldProtectListener : Listener {
         event.isCancelled = isCancelled
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     fun onBlockIgniteEvent(event: BlockIgniteEvent){
-        var isCancelled = false
+        var isCancelled = event.isCancelled
         val wConfig = worldProtectConfig.simpleConfig[event.block.level.folderName]
         if (wConfig != null) {
             if (!wConfig.canIgnite){
@@ -247,9 +248,9 @@ object WorldProtectListener : Listener {
     }
 
     // Snow Layer
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     fun onBlockFormEvent(event: BlockFormEvent){
-        var isCancelled = false
+        var isCancelled = event.isCancelled
         val wConfig = worldProtectConfig.simpleConfig[event.block.level.folderName]
         if (wConfig != null) {
             if (!wConfig.canBlockForm){
@@ -259,9 +260,9 @@ object WorldProtectListener : Listener {
         event.isCancelled = isCancelled
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     fun onLiquidFlowEvent(event: LiquidFlowEvent) {
-        var isCancelled = false
+        var isCancelled = event.isCancelled
         val wConfig = worldProtectConfig.simpleConfig[event.block.level.folderName]
         if (wConfig != null) {
             if (!wConfig.canLiquidFlow){
@@ -271,9 +272,9 @@ object WorldProtectListener : Listener {
         event.isCancelled = isCancelled
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     fun onLeavesDecayEvent(event: LeavesDecayEvent){
-        var isCancelled = false
+        var isCancelled = event.isCancelled
         val wConfig = worldProtectConfig.simpleConfig[event.block.level.folderName]
         if (wConfig != null) {
             if (!wConfig.canLeavesDecay){
@@ -283,9 +284,9 @@ object WorldProtectListener : Listener {
         event.isCancelled = isCancelled
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     fun onWeatherChangeEvent(event: WeatherChangeEvent){
-        var isCancelled = false
+        var isCancelled = event.isCancelled
         val wConfig = worldProtectConfig.simpleConfig[event.level.folderName]
         if (wConfig != null) {
             if (!wConfig.canWeatherChange) isCancelled = true
@@ -293,9 +294,9 @@ object WorldProtectListener : Listener {
         event.isCancelled = isCancelled
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     fun onPlayerItemHeldEvent(event: PlayerItemHeldEvent){
-        var isCancelled = false
+        var isCancelled = event.isCancelled
         val wConfig = worldProtectConfig.simpleConfig[event.player.level.folderName]
         if (wConfig != null) {
             if (wConfig.bannedItemList.contains(event.item.id)){
@@ -309,9 +310,9 @@ object WorldProtectListener : Listener {
         event.isCancelled = isCancelled
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     fun onPlayerFoodLevelChangeEvent(event: PlayerFoodLevelChangeEvent) {
-        var isCancelled = false
+        var isCancelled = event.isCancelled
         val wConfig = worldProtectConfig.simpleConfig[event.player.level.folderName]
         if (wConfig != null) if (!wConfig.canFoodLevelChange){
             isCancelled = true
@@ -320,9 +321,9 @@ object WorldProtectListener : Listener {
         event.isCancelled = isCancelled
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     fun onEntityExplodeEvent(event: EntityExplodeEvent) {
-        var isCancelled = false
+        var isCancelled = event.isCancelled
         val wConfig = worldProtectConfig.simpleConfig[event.entity.level.folderName]
         if (wConfig != null) if (!wConfig.canExplosion){
             isCancelled = true
@@ -330,9 +331,9 @@ object WorldProtectListener : Listener {
         event.isCancelled = isCancelled
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     fun onInventoryTransactionEvent(event: InventoryTransactionEvent) {
-        var isCancelled = false
+        var isCancelled = event.isCancelled
         val wConfig = worldProtectConfig.simpleConfig[event.transaction.source.level.folderName]
         if (wConfig != null) if (!wConfig.canInventoryTransaction) {
             isCancelled = true
@@ -343,7 +344,7 @@ object WorldProtectListener : Listener {
         event.isCancelled = isCancelled
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     fun onPlayerDie(event: PlayerDeathEvent) {
         if (event.entity is Player) {
             val wConfig = worldProtectConfig.simpleConfig[event.entity.level.folderName]
@@ -354,14 +355,14 @@ object WorldProtectListener : Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     fun onPlayerInvalidMove(event: PlayerInvalidMoveEvent) {
         event.isCancelled = true
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     fun onPlayerCommandPreprocessEvent(event: PlayerCommandPreprocessEvent) {
-        var isCancelled = false
+        var isCancelled = event.isCancelled
         //println(event.message.commandFormat())
         var regex1: Regex
 
