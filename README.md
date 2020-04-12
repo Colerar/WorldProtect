@@ -52,3 +52,5 @@
 - [KotlinLib](https://nukkitx.com/resources/kotlinlib.48/)
 - [GUI](https://github.com/Him188/GUI)
 - [EasyAPI](https://github.com/WetABQ/EasyAPI-Nukkit)
+# 题外话
+这是我的第一个 Nukkit 插件，格外感谢ＷｅｔＡＢＱ对我的帮助。
